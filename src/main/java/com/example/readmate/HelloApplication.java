@@ -24,6 +24,8 @@ public class HelloApplication extends Application {
     long endtime = 0;
     float timeDifference = 0f;
     Label speedTracker;
+    Label successRate;
+    int amountSuccess = 0;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -33,11 +35,14 @@ public class HelloApplication extends Application {
         StackPane root = new StackPane();
         Scene scene = new Scene(root, 1280, 960);
         firstButton.setPrefWidth(200);
+        firstButton.setPrefHeight(200);
         firstButton.setOnAction(event -> buttonClick(event));
         speedTracker = new Label();
+        successRate = new Label();
 
 
-        root.getChildren().addAll(firstButton,speedTracker);
+        root.getChildren().addAll(successRate,firstButton,speedTracker);
+        StackPane.setAlignment(successRate,Pos.BOTTOM_CENTER);
         StackPane.setAlignment(speedTracker,Pos.TOP_CENTER);
 
         stage.setTitle("ReadMate");
@@ -58,11 +63,13 @@ public class HelloApplication extends Application {
             }
         }
         firstButton.setText(String.valueOf(counter));
-        if(timeDifference<0.01) {
+        if(timeDifference<0.08 && timeDifference != 0) {
             speedTracker.setText("You're doing well " + timeDifference + "s");
+            amountSuccess++;
         } else {
             speedTracker.setText("GO FASTER  " + timeDifference + "s");
         }
+        successRate.setText((String.format("%.2f", (amountSuccess/(float)counter)*100)) + "% SUCCESS");
 
     }
 
